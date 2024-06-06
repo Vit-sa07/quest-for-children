@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест для программистов - Вопрос 15</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .button {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            display: inline-block;
+            background-color: gray;
+            text-align: center;
+            line-height: 100px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Вопрос 15: Симон говорит</h1>
+        <p>Повторяйте последовательность цветов, показанную Симоном.</p>
+        <div id="game-board">
+            <div class="button" id="red" style="background-color: red;" onclick="playerMove('red')"></div>
+            <div class="button" id="blue" style="background-color: blue;" onclick="playerMove('blue')"></div>
+            <div class="button" id="green" style="background-color: green;" onclick="playerMove('green')"></div>
+            <div class="button" id="yellow" style="background-color: yellow;" onclick="playerMove('yellow')"></div>
+        </div>
+        <p id="result"></p>
+    </div>
+    <script>
+        const sequence = [];
+        let playerSequence = [];
+        let level = 0;
+
+        function nextSequence() {
+            const colors = ['red', 'blue', 'green', 'yellow'];
+            const randomColor = colors[Math.floor(Math.random() * 4)];
+            sequence.push(randomColor);
+            showSequence();
+        }
+
+        function showSequence() {
+            let index = 0;
+            const interval = setInterval(() => {
+                const color = sequence[index];
+                document.getElementById(color).style.opacity = '0.5';
+                setTimeout(() => {
+                    document.getElementById(color).style.opacity = '1';
+                }, 500);
+                index++;
+                if (index >= sequence.length) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
+        function playerMove(color) {
+            playerSequence.push(color);
+            const currentMove = playerSequence.length - 1;
+            if (playerSequence[currentMove] !== sequence[currentMove]) {
+                document.getElementById('result').innerHTML = `Неправильно! Вы проиграли на уровне ${level}. <br><a href="15.html">Попробовать снова</a>`;
+                resetGame();
+                return;
+            }
+            if (playerSequence.length === sequence.length) {
+                level++;
+                playerSequence = [];
+                if (level === 15) {
+                    document.getElementById('result').innerHTML = `Поздравляем! Вы достигли 15 уровня. <br><a href="16.html">Следующий вопрос</a>`;
+                } else {
+                    document.getElementById('result').innerText = `Уровень ${level}`;
+                    setTimeout(nextSequence, 1000);
+                }
+            }
+        }
+
+        function resetGame() {
+            sequence.length = 0;
+            playerSequence.length = 0;
+            level = 0;
+        }
+
+        nextSequence();
+    </script>
+</body>
+</html>

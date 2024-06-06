@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест для программистов - Вопрос 17</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="content">
+        <h1>Вопрос 17</h1>
+        <p>Сколько лет Земле?</p>
+        <input type="number" id="age-input" placeholder="Введите возраст в миллиардах лет">
+        <button onclick="checkAnswer()">Проверить ответ</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        function checkAnswer() {
+            const userAnswer = document.getElementById('age-input').value;
+            const result = document.getElementById('result');
+            const correctAnswer = 4.54; // возраст Земли в миллиардах лет
+
+            if (parseFloat(userAnswer) === correctAnswer) {
+                result.innerHTML = `Правильно! Возраст Земли примерно ${correctAnswer} миллиарда лет. <br><a href="18.html">Следующий вопрос</a>`;
+            } else {
+                result.innerText = "Неправильно! Попробуйте еще раз.";
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест для программистов - Вопрос 4</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="content">
+        <h1>Вопрос 9: Угадай число</h1>
+        <p>Я загадал число от 1 до 1000. Попробуй угадать его!</p>
+        <input type="number" id="guess" min="1" max="1000" placeholder="Введите число">
+        <button onclick="checkGuess()">Угадать</button>
+        <p id="result"></p>
+        <script>
+            const correctNumber = Math.floor(Math.random() * 1000) + 1;
+            
+            function checkGuess() {
+                const userGuess = parseInt(document.getElementById('guess').value);
+                const result = document.getElementById('result');
+                
+                if (userGuess === correctNumber) {
+                    result.innerText = "Поздравляем! Вы угадали число. Переходите к следующему вопросу.";
+                    result.innerHTML += '<br><a href="question10.html">Следующий вопрос</a>';
+                } else if (userGuess > correctNumber) {
+                    result.innerText = "Неправильно! Моё число меньше. Попробуйте еще раз.";
+                } else if (userGuess < correctNumber) {
+                    result.innerText = "Неправильно! Моё число больше. Попробуйте еще раз.";
+                } else {
+                    result.innerText = "Пожалуйста, введите число от 1 до 1000.";
+                }
+            }
+        </script>
+    </div>
+</body>
+</html>

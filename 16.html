@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест для программистов - Вопрос 25</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-template-rows: repeat(4, 80px);
+            gap: 2px;
+            margin: 0 auto;
+        }
+        .tile {
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            background-color: #ccc;
+            font-size: 2em;
+            cursor: pointer;
+        }
+        .empty {
+            background-color: white;
+            border: 1px dashed #ccc;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Вопрос Аркадий: Пятнашки</h1>
+        <p>Перетащи плитки, чтобы собрать их по порядку.</p>
+        <div id="puzzle-board" class="puzzle-board"></div>
+        <p id="result"></p>
+        <button id="next-question" class="hidden" onclick="goToNextQuestion()">Шутка: следующий вопрос</button>
+    </div>
+    <script>
+        const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, null];
+        let emptyIndex = 15;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function createBoard() {
+            const puzzleBoard = document.getElementById('puzzle-board');
+            puzzleBoard.innerHTML = '';
+            shuffle(tiles);
+            tiles.forEach((tile, index) => {
+                const tileElement = document.createElement('div');
+                tileElement.classList.add('tile');
+                if (tile === null) {
+                    tileElement.classList.add('empty');
+                    tileElement.innerHTML = '&nbsp;';
+                } else {
+                    tileElement.innerText = tile;
+                }
+                tileElement.dataset.index = index;
+                tileElement.onclick = () => moveTile(index);
+                puzzleBoard.appendChild(tileElement);
+            });
+            emptyIndex = tiles.indexOf(null);
+        }
+
+        function moveTile(index) {
+            if (isValidMove(index)) {
+                tiles[emptyIndex] = tiles[index];
+                tiles[index] = null;
+                emptyIndex = index;
+                createBoard();
+                if (isSolved()) {
+                    document.getElementById('result').innerHTML = `Поздравляем! Вы собрали плитки. <br><a href="congrats.html">Следующий вопрос</a>`;
+                }
+            }
+        }
+
+        function isValidMove(index) {
+            const validMoves = [
+                emptyIndex - 1, emptyIndex + 1,
+                emptyIndex - 4, emptyIndex + 4
+            ];
+            return validMoves.includes(index);
+        }
+
+        function isSolved() {
+            for (let i = 0; i < tiles.length - 1; i++) {
+                if (tiles[i] !== i + 1) return false;
+            }
+            return true;
+        }
+
+        function showNextButton() {
+            document.getElementById('next-question').classList.remove('hidden');
+        }
+
+        function goToNextQuestion() {
+            window.location.href = "17.html";
+        }
+
+        setTimeout(showNextButton, 60000); // Показать кнопку через 1 минуту (60000 миллисекунд)
+
+        shuffle(tiles);
+        createBoard();
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест для программистов - Вопрос 14</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: gray;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+            line-height: 100px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <h1>Вопрос 14: Найди пару</h1>
+        <p>Найди две одинаковые карты!</p>
+        <div id="game-board"></div>
+        <p id="result"></p>
+    </div>
+    <script>
+        const cards = [
+            'A', 'A', 'B', 'B', 'C', 'C', 'D', 'D'
+        ];
+        let firstCard = null;
+        let secondCard = null;
+        let attempts = 0;
+        
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        function createBoard() {
+            const gameBoard = document.getElementById('game-board');
+            shuffle(cards);
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.classList.add('card');
+                cardElement.dataset.value = card;
+                cardElement.dataset.index = index;
+                cardElement.onclick = () => revealCard(cardElement);
+                gameBoard.appendChild(cardElement);
+            });
+        }
+        
+        function revealCard(cardElement) {
+            if (firstCard && secondCard) return;
+
+            cardElement.innerText = cardElement.dataset.value;
+            cardElement.style.backgroundColor = 'green';
+
+            if (!firstCard) {
+                firstCard = cardElement;
+            } else if (!secondCard) {
+                secondCard = cardElement;
+                checkMatch();
+            }
+        }
+        
+        function checkMatch() {
+            attempts++;
+            if (firstCard.dataset.value === secondCard.dataset.value) {
+                firstCard = null;
+                secondCard = null;
+                if (document.querySelectorAll('.card:empty').length === 0) {
+                    document.getElementById('result').innerHTML = `Поздравляем! Вы нашли все пары за ${attempts} попыток. <br><a href="15.html">Следующий вопрос</a>`;
+                }
+            } else {
+                setTimeout(() => {
+                    firstCard.innerText = '';
+                    firstCard.style.backgroundColor = 'gray';
+                    secondCard.innerText = '';
+                    secondCard.style.backgroundColor = 'gray';
+                    firstCard = null;
+                    secondCard = null;
+                }, 1000);
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
