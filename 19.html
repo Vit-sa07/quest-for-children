@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Квест для программистов - Вопрос о фразе</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="content">
+        <h1>Вопрос 19: Кто сказал эту фразу?</h1>
+        <p>"Упорство очень важно. Вы не должны сдаваться до тех пор, пока не будете вынуждены сдаться."</p>
+        <input type="text" id="answer" placeholder="Введите ваш ответ здесь">
+        <button onclick="checkAnswer()">Ответить</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById('answer').value.toLowerCase();
+            const correctAnswer = "илон маск";
+            if (answer === correctAnswer) {
+                window.location.href = "next_question.html";
+            } else {
+                document.getElementById('result').innerText = "Неправильно! Попробуйте снова.";
+            }
+        }
+    </script>
+</body>
+</html>
